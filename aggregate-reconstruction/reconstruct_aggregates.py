@@ -38,7 +38,7 @@ class PathData(object):
     def parse(self, line, numModels):
         """Parses a line of the form AB, where A is of type [(x,y,z)],
         and B is of type [(a,g,b)].
-        Return is of type [(ModelID,x,y,z,a,b,g)]."""
+        Return is of type [(x,y,z,a,b,g)]."""
         line = line.strip()
         itemList = line.split(' ')      ## line.split(sep=' ') for python3
         
@@ -88,10 +88,10 @@ class ConfigurationRenderer(object):
         x = 10*float(modelConfiguration[0])  ## scale "up" by a factor of 10
         y = 10*float(modelConfiguration[1])  ## because modelConfiguration's x,y,z have units of nm
         z = 10*float(modelConfiguration[2])  ## but PyMOL uses coordinates of Angstroms
+        translationVector = "[{},{},{}]".format(x,y,z)
         xDegOfRot = 360*float(modelConfiguration[3])  ## alpha, is in units of a fraction of 360 degrees
         yDegOfRot = 360*float(modelConfiguration[4])
         zDegOfRot = 360*float(modelConfiguration[5])
-        translationVector = "[{},{},{}]".format(x,y,z)
         
         #cmd.load(pdb_fname, "original_{}".format(modelName))  ## for debug, something to compare against
         cmd.load(pdb_fname, modelName)
