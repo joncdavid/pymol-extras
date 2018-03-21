@@ -30,8 +30,6 @@ class PathData(object):
         with open(fname, 'r') as f:
             for line in f:
                 modelConfigList = self.parse(line, numModels)
-                #print(modelConfigList)
-                #print("stepID: {}".format(stepID))
                 self.stepDict[stepID] = modelConfigList
                 stepID = stepID + 1
         return
@@ -43,8 +41,6 @@ class PathData(object):
         Return is of type [(ModelID,x,y,z,a,b,g)]."""
         line = line.strip()
         itemList = line.split(' ')      ## line.split(sep=' ') for python3
-        #print("len(itemList): {}".format( len(itemList )))
-        #print("itemList: {}".format( itemList ))
         
         positionList = []   ## has type: [(x,y,z)]
         receptorID = 0
@@ -52,7 +48,6 @@ class PathData(object):
             xID = 3*receptorID  ## x_index, where to find this x in itemList
             yID = xID + 1
             zID = xID + 2
-            #print("(xID,yID,zID) = ({}, {}, {})".format(xID, yID, zID))
             position = (itemList[xID], itemList[yID], itemList[zID])
             positionList.append(position)
             receptorID = receptorID + 1
@@ -64,7 +59,6 @@ class PathData(object):
             aID = baseOffset + 3*allergenID
             bID = aID + 1
             gID = aID + 2
-            #print("(aID, bID, gID) = ({}, {}, {}) ".format(aID,bID,gID))
             rotation = (itemList[aID], itemList[bID], itemList[gID])
             rotationList.append(rotation)
             allergenID = allergenID + 1
@@ -91,8 +85,6 @@ class ConfigurationRenderer(object):
         modelConfiguration is of type (x,y,z,a,b,g);
         model_fname is of type string and represents the model PDB file."""
         
-        #print("[DEBUG] in ConfigurationRenderer.render()...")
-        #print(".. [DEBUG] modelConfiguration: {}".format(modelConfiguration))
         x = 10*float(modelConfiguration[0])  ## scale "up" by a factor of 10
         y = 10*float(modelConfiguration[1])  ## because modelConfiguration's x,y,z have units of nm
         z = 10*float(modelConfiguration[2])  ## but PyMOL uses coordinates of Angstroms
@@ -110,8 +102,6 @@ class ConfigurationRenderer(object):
         cmd.translate(translationVector, modelName, 0, 0)  ## all states, and _not_ camera coordinates
 
         cmd.color(color_str, modelName)
-        #cmd.hide('all', modelName)
-        #cmd.show('cartoon', modelName)
 
     def final_render(self):
         cmd.hide()
@@ -137,7 +127,7 @@ def test_outputAllConfigsInLastStep():
     for modelID in range(0, numModels):
         print("(Step999,Model{}) is: {}".format(modelID, data.getConfiguration(999, modelID)))
 
-    ## modelIDs in quadrant 3 (-x values, +z values):
+    ## my filterested modelIDs in quadrant 3 (-x values, +z values):
     # (Step999,Model1) is: ('-43.3077', '-4.59132', '27.605', '0', '0.122539', '0')
     # (Step999,Model2) is: ('-56.2992', '-4.59132', '13.7883', '0', '0.392702', '0')
     # (Step999,Model4) is: ('-58.7896', '-4.59132', '27.6803', '0', '0.682062', '0')
@@ -191,7 +181,7 @@ def test_ConfigurationRenderer_manyModels():
     configRenderer.render(modelConfig_14, allergen_pdb_fname, "model14-alg", allergen_color_str)
     configRenderer.render(modelConfig_16, allergen_pdb_fname, "model16-alg", allergen_color_str)
     configRenderer.render(modelConfig_18, allergen_pdb_fname, "model18-alg", allergen_color_str)
-    configRenderer.final_render()  ## hide, and show as cartoons
+    configRenderer.final_render()  ## hide all, then show as cartoons
 
     # (Step999,Model1) is: ('-43.3077', '-4.59132', '27.605', '0', '0.122539', '0')
     # (Step999,Model2) is: ('-56.2992', '-4.59132', '13.7883', '0', '0.392702', '0')
