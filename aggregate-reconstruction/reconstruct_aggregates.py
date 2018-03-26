@@ -169,7 +169,7 @@ def test_ConfigurationRenderer_manyModels():
     modelConfig_14 = data.getConfiguration(999,14)
     modelConfig_16 = data.getConfiguration(999,16)
     modelConfig_18 = data.getConfiguration(999,18)
-    receptor_color_str = 'wheat'
+    receptor_color_str = 'marine'
     allergen_color_str = 'green'
 
     configRenderer = ConfigurationRenderer()
